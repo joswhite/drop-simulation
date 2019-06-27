@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Web GL Tutorial</h1>
+        <h1>Gravity Simulator</h1>
       </header>
       <WebGLComponent />
     </div>
