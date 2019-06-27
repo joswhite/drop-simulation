@@ -9,17 +9,10 @@ export class Simulator {
         this.setError = setError;
         this.program = new ShaderProgram(gl, setError);
         this.programInfo = this.program.getProgramInfo();
-        this.cubes = [
-            new Cube(gl, 1),
-            new Cube(gl, -1)
-        ];
+        this.cubes = [];
         this.ground = new Ground(gl);
         this.lastRenderTime = null;
         this.setNextRender();
-    }
-
-    createCube(args) {
-        this.cubes.push(new Cube(this.gl, args));
     }
 
     drawCube(cube, projectionMatrix) {
@@ -97,6 +90,10 @@ export class Simulator {
 
         // Draw ground
         this.drawGround(projectionMatrix);
+    }
+
+    dropCube(position, velocity, gravity, hexColor) {
+        this.cubes.push(new Cube(this.gl, position, velocity, gravity, hexColor));
     }
 
     render = (time) => {

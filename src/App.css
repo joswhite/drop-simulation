@@ -6,16 +6,16 @@ body {
     display: inline-block;
     margin: 0;
     text-align: right;
-    width: 50px;
+    width: 55px;
 }
 
 .ias-input-container > input {
-    width: 50px;
+    width: 70px;
 }
 
 .input-panel {
     display: inline-block;
-    width: 150px;
+    width: 170px;
 }
 
 .section {

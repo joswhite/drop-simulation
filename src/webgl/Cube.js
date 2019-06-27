@@ -3,11 +3,13 @@ const Y_INDEX = 1;
 const Z_INDEX = 2;
 
 export class Cube {
-    constructor(gl, x) {
+    constructor(gl, position, velocity, gravity, hexColor) {
         this.gl = gl;
+        this.color = this.hexToColor(hexColor);
         this.initBuffers();
-        this.position = [x, 0, -6];  // units
-        this.velocity = [0, 0, 0];  // units / sec
+        this.position = position;
+        this.velocity = velocity;
+        this.gravity = gravity;
         this.rotation = 0;  // radians
     }
 
@@ -23,50 +25,45 @@ export class Cube {
         return this.rotation;
     }
 
+    hexToColor(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16) / 256,
+            g: parseInt(result[2], 16) / 256,
+            b: parseInt(result[3], 16) / 256
+        } : null;
+    }
+
     initBuffers() {
         const {gl} = this;
-        // Create a buffer for the cube's vertex positions.
-
         const positionBuffer = gl.createBuffer();
-
-        // Select the positionBuffer as the one to apply buffer
-        // operations to from here out.
-
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-        // Now create an array of positions for the cube.
-
         const positions = [
             // Front face
             -1.0, -1.0,  1.0,
             1.0, -1.0,  1.0,
             1.0,  1.0,  1.0,
             -1.0,  1.0,  1.0,
-
             // Back face
             -1.0, -1.0, -1.0,
             -1.0,  1.0, -1.0,
             1.0,  1.0, -1.0,
             1.0, -1.0, -1.0,
-
             // Top face
             -1.0,  1.0, -1.0,
             -1.0,  1.0,  1.0,
             1.0,  1.0,  1.0,
             1.0,  1.0, -1.0,
-
             // Bottom face
             -1.0, -1.0, -1.0,
             1.0, -1.0, -1.0,
             1.0, -1.0,  1.0,
             -1.0, -1.0,  1.0,
-
             // Right face
             1.0, -1.0, -1.0,
             1.0,  1.0, -1.0,
             1.0,  1.0,  1.0,
             1.0, -1.0,  1.0,
-
             // Left face
             -1.0, -1.0, -1.0,
             -1.0, -1.0,  1.0,
@@ -74,49 +71,32 @@ export class Cube {
             -1.0,  1.0, -1.0,
         ];
 
-        // Now pass the list of positions into WebGL to build the
-        // shape. We do this by creating a Float32Array from the
-        // JavaScript array, then use it to fill the current buffer.
-
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
-        // Now set up the colors for the faces. We'll use solid colors
-        // for each face.
-
-        const faceColors = [
-            [1.0,  1.0,  1.0,  1.0],    // Front face: white
-            [1.0,  0.0,  0.0,  1.0],    // Back face: red
-            [0.0,  1.0,  0.0,  1.0],    // Top face: green
-            [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
-            [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
-            [1.0,  0.0,  1.0,  1.0],    // Left face: purple
-        ];
-
-        // Convert the array of colors into a table for all the vertices.
+        let faceColors = [];
+        for (let i = 0; i < 6; i++) {
+            const r = this.randomColorOffset(this.color.r);
+            const g = this.randomColorOffset(this.color.g);
+            const b = this.randomColorOffset(this.color.b);
+            faceColors.push([r,  g,  b,  1.0]);
+        }
 
         let colors = [];
-
         for (let j = 0; j < faceColors.length; ++j) {
             const c = faceColors[j];
-
-            // Repeat each color four times for the four vertices of the face
-            colors = colors.concat(c, c, c, c);
+            colors = colors.concat(c, c, c, c); // Repeat 4 times for 4 vertices
         }
 
         const colorBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-        // Build the element array buffer; this specifies the indices
-        // into the vertex arrays for each face's vertices.
-
+        // Build the element array buffer; this specifies the indices into the vertex arrays for each face's vertices.
         const indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-        // This array defines each face as two triangles, using the
-        // indices into the vertex array to specify each triangle's
+        // Define each face as two triangles, using the indices into the vertex array to specify each triangle's
         // position.
-
         const indices = [
             0,  1,  2,      0,  2,  3,    // front
             4,  5,  6,      4,  6,  7,    // back
@@ -126,10 +106,7 @@ export class Cube {
             20, 21, 22,     20, 22, 23,   // left
         ];
 
-        // Now send the element array to GL
-
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-            new Uint16Array(indices), gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
         this.buffers = {
             position: positionBuffer,
@@ -140,15 +117,31 @@ export class Cube {
 
     isVisible() {
         const [x, y, z] = this.position;
-        if (z > 1 || y < -2) {
+        if (z > 1 || y < -7) {
             return false;
         }
 
-        return (x * x) + (y * y) + (z * z) < 100;
+        return (x * x) + (y * y) + (z * z) < 1000;
     }
 
     move(deltaTime) {
-        this.position[Z_INDEX] -= deltaTime;
+        this.velocity[Y_INDEX] -= (this.gravity * deltaTime);
+        this.velocity.forEach((speed, index) => {
+            this.position[index] += (speed * deltaTime);
+        });
         this.rotation += deltaTime;
+    }
+
+    randomColorOffset(color) {
+        const newColor = color + (Math.random() - .5);
+        if (newColor > 1) {
+            return 1;
+        }
+        else if (newColor < 0) {
+            return 0;
+        }
+        else {
+            return newColor;
+        }
     }
 }

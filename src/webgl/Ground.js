@@ -16,8 +16,8 @@ export class Ground {
         const positions = [
             2.0, -1.5, -4.0,
             -2.0, -1.5, -4.0,
-            1.0, -4, -20.0,
-            -1.0, -4, -20.0,
+            2.0, -10, -40.0,
+            -2.0, -10, -40.0,
         ];
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
