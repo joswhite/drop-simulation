@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {Simulator} from './Simulator';
 
 export function DropSimulator() {
     const canvasRef = useRef(null);
@@ -16,6 +17,7 @@ export function DropSimulator() {
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
+        const simulator = new Simulator(gl, setError);
     }, []);
 
     const errorElement = error ? <p className="error">{error}</p> : null;
