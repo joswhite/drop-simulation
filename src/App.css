@@ -1,0 +1,23 @@
+body {
+    margin: 25px;
+}
+
+.ias-input-container > label {
+    display: inline-block;
+    margin: 0;
+    text-align: right;
+    width: 50px;
+}
+
+.ias-input-container > input {
+    width: 50px;
+}
+
+.input-panel {
+    display: inline-block;
+    width: 150px;
+}
+
+.section {
+    margin-top: 20px;
+}

@@ -94,9 +94,9 @@ export class Cube {
 
         // Convert the array of colors into a table for all the vertices.
 
-        var colors = [];
+        let colors = [];
 
-        for (var j = 0; j < faceColors.length; ++j) {
+        for (let j = 0; j < faceColors.length; ++j) {
             const c = faceColors[j];
 
             // Repeat each color four times for the four vertices of the face
@@ -140,15 +140,15 @@ export class Cube {
 
     isVisible() {
         const [x, y, z] = this.position;
-        if (z > 1 || z < -100) {
+        if (z > 1 || y < -2) {
             return false;
         }
 
-        return (x * x) + (y * y) + (z * z) < 50;
+        return (x * x) + (y * y) + (z * z) < 100;
     }
 
     move(deltaTime) {
-        this.position[Z_INDEX] -= (deltaTime / 1000);
-        this.rotation += (deltaTime / 1000);
+        this.position[Z_INDEX] -= deltaTime;
+        this.rotation += deltaTime;
     }
 }

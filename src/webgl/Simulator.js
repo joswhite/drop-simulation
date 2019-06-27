@@ -1,6 +1,7 @@
 import { mat4 } from 'gl-matrix';
 import { ShaderProgram } from './ShaderProgram';
 import {Cube} from './Cube';
+import {Ground} from './Ground';
 
 export class Simulator {
     constructor(gl, setError) {
@@ -12,8 +13,13 @@ export class Simulator {
             new Cube(gl, 1),
             new Cube(gl, -1)
         ];
+        this.ground = new Ground(gl);
         this.lastRenderTime = null;
         this.setNextRender();
+    }
+
+    createCube(args) {
+        this.cubes.push(new Cube(this.gl, args));
     }
 
     drawCube(cube, projectionMatrix) {
@@ -44,6 +50,28 @@ export class Simulator {
         }
     }
 
+    drawGround(projectionMatrix) {
+        const {gl, programInfo} = this;
+        // Create matrix to draw ground in proper position
+        const modelViewMatrix = mat4.create();
+
+        // Setup buffers
+        const buffers = this.ground.getBuffers();
+        const {vertexPosition, vertexColor} = programInfo.attribLocations;
+        this.setupBuffer(3, buffers.position, vertexPosition);
+        this.setupBuffer(4, buffers.color, vertexColor);
+
+        // Draw using program
+        gl.useProgram(programInfo.program);
+        gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
+        gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
+        {
+            const offset = 0;
+            const vertexCount = 4;
+            gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+        }
+    }
+
     drawScene() {
         const {gl} = this;
 
@@ -68,12 +96,12 @@ export class Simulator {
         });
 
         // Draw ground
-
+        this.drawGround(projectionMatrix);
     }
 
     render = (time) => {
         if (this.lastRenderTime) {
-            const deltaTime = time - this.lastRenderTime;
+            const deltaTime = (time - this.lastRenderTime) / 1000;
             this.cubes.forEach((cube) => {
                 cube.move(deltaTime)
             });

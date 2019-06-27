@@ -1,5 +1,7 @@
 import React from 'react';
+import '@microfocus/ux-ias/dist/ux-ias.css';
 import './App.css';
+
 import {DropSimulator} from './webgl/DropSimulator';
 
 function App() {
