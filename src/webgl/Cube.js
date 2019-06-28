@@ -117,11 +117,11 @@ export class Cube {
 
     isVisible() {
         const [x, y, z] = this.position;
-        if (z > 1 || y < -7) {
+        if (z > 1 || y < -9) {
             return false;
         }
 
-        return (x * x) + (y * y) + (z * z) < 1000;
+        return (x * x) + (y * y) + (z * z) < 10000;
     }
 
     move(deltaTime) {

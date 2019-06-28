@@ -12,6 +12,7 @@ export class Simulator {
         this.cubes = [];
         this.ground = new Ground(gl);
         this.lastRenderTime = null;
+        this.playing = true;
         this.setNextRender();
     }
 
@@ -96,6 +97,17 @@ export class Simulator {
         this.cubes.push(new Cube(this.gl, position, velocity, gravity, hexColor));
     }
 
+    playOrPause() {
+        if (this.playing) {
+            this.playing = false;
+        }
+        else {
+            this.playing = true;
+            this.lastRenderTime = null;
+            this.setNextRender();
+        }
+    }
+
     render = (time) => {
         if (this.lastRenderTime) {
             const deltaTime = (time - this.lastRenderTime) / 1000;
@@ -111,7 +123,9 @@ export class Simulator {
     };
 
     setNextRender = () => {
-        requestAnimationFrame(this.render);
+        if (this.playing) {
+            requestAnimationFrame(this.render);
+        }
     };
 
     setupBuffer(numComponents, buffer, vertex) {

@@ -32,6 +32,10 @@ export function DropSimulator() {
         simulatorRef.current.dropCube(position, velocity, parseInput(gravity), hexColor);
     };
 
+    const startStopSimulation = () => {
+        simulatorRef.current.playOrPause();
+    }
+
     // Initialize WebGL to a black screen and start up simulator
     const canvasRef = useRef(null);
     useEffect(() => {
@@ -80,6 +84,9 @@ export function DropSimulator() {
             {inputElements}
             <div className="section">
                 <button type="button" onClick={dropCube} className="ias-button">Drop Cube!</button>
+            </div>
+            <div className="section">
+                <button type="button" onClick={startStopSimulation} className="ias-button">Play/Pause</button>
             </div>
         </div>
     );
