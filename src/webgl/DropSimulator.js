@@ -25,8 +25,11 @@ export function DropSimulator() {
 
     // Handle to create cube
     const simulatorRef = useRef(null);
+    const parseInput = (x) => parseInt(x);
     const dropCube = () => {
-        simulatorRef.current.dropCube([cubeX, cubeY, cubeZ], [cubeVX, cubeVY, cubeVZ], gravity, hexColor);
+        const position = [cubeX, cubeY, cubeZ].map(parseInput);
+        const velocity = [cubeVX, cubeVY, cubeVZ].map(parseInput);
+        simulatorRef.current.dropCube(position, velocity, parseInput(gravity), hexColor);
     };
 
     // Initialize WebGL to a black screen and start up simulator
