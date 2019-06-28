@@ -1,7 +1,7 @@
 {
-  "name": "webgl-exploration",
+  "name": "drop-simulation",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
   "dependencies": {
     "@microfocus/ux-ias": "1.1.0",
     "gl-matrix": "2.4.0",
