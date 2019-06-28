@@ -23,6 +23,7 @@ export class ShaderProgram {
             this.shaderProgram = null;
         }
 
+        // Store program info to be used during drawing
         this.programInfo = {
             program: this.shaderProgram,
             attribLocations: {
@@ -36,6 +37,7 @@ export class ShaderProgram {
         };
     }
 
+    // Show the color of the object without lighting effects
     getFragmentShaderSource() {
         return `
             varying lowp vec4 vColor;
@@ -50,6 +52,7 @@ export class ShaderProgram {
         return this.programInfo;
     }
 
+    // Calculate WebGL position of objects based on camera, location of object, and position of its vertices
     getVertexShaderSource() {
         return `
             attribute vec4 aVertexPosition;

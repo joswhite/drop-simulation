@@ -1,3 +1,4 @@
+//Initializes WebGL buffers for the ground
 export class Ground {
     constructor(gl) {
         this.gl = gl;

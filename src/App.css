@@ -1,5 +1,6 @@
-body {
-    margin: 25px;
+.error {
+    color: red;
+    font-size: 20px;
 }
 
 .ias-input-container > label {

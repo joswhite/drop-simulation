@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {Simulator} from './Simulator';
 
+//
 export function DropSimulator() {
-    // Inputs for creating cube
+    // Inputs used for creating cube
     const [error, setError] = useState(null);
     const [cubeX, setCubeX] = useState(-10);
     const [cubeY, setCubeY] = useState(8);
@@ -23,8 +24,10 @@ export function DropSimulator() {
           { id: 'hexColor', value: hexColor, onChange: (e) => setHexColor(e.target.value)} ]
     ];
 
-    // Handle to create cube
+    // Keep track of simulator so we can perform operations on it
     const simulatorRef = useRef(null);
+
+    // Allow user to create cube
     const parseInput = (x) => parseInt(x);
     const dropCube = () => {
         const position = [cubeX, cubeY, cubeZ].map(parseInput);
@@ -32,9 +35,10 @@ export function DropSimulator() {
         simulatorRef.current.dropCube(position, velocity, parseInput(gravity), hexColor);
     };
 
+    // Allow user to play/pause animation
     const startStopSimulation = () => {
         simulatorRef.current.playOrPause();
-    }
+    };
 
     // Initialize WebGL to a black screen and start up simulator
     const canvasRef = useRef(null);
@@ -51,11 +55,10 @@ export function DropSimulator() {
         gl.clear(gl.COLOR_BUFFER_BIT);
         simulatorRef.current = new Simulator(gl, setError);
         dropCube();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
-
-    // Render
+    // Render WebGL canvas, inputs, and control buttons
     const errorElement = error ? <p className="error">{error}</p> : null;
 
     const inputElements = inputsGrid.map((inputs, index) => {

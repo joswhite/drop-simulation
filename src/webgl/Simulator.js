@@ -3,10 +3,10 @@ import { ShaderProgram } from './ShaderProgram';
 import {Cube} from './Cube';
 import {Ground} from './Ground';
 
+// Runs WebGL simulation of falling cubes. Also shows the ground.
 export class Simulator {
     constructor(gl, setError) {
         this.gl = gl;
-        this.setError = setError;
         this.program = new ShaderProgram(gl, setError);
         this.programInfo = this.program.getProgramInfo();
         this.cubes = [];
@@ -72,8 +72,8 @@ export class Simulator {
         // Clear canvas to full black
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clearDepth(1.0);
-        gl.enable(gl.DEPTH_TEST);           // Enable depth testing
-        gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+        gl.enable(gl.DEPTH_TEST);           // Allow depth testing
+        gl.depthFunc(gl.LEQUAL);            // Make near things obscure far things
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         // Create perspective matrix to simulate the distortion of perspective in a camera
