@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "dependencies": {
-    "@microfocus/ux-ias": "1.1.0",
+    "@microfocus/ux-ias": "1.1.2",
     "gl-matrix": "2.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

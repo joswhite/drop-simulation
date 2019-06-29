@@ -1082,10 +1082,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@microfocus/ux-ias@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@microfocus/ux-ias/-/ux-ias-1.1.0.tgz#fca7dffc59882f9201af58bf0ade7785880a2a2a"
-  integrity sha512-FQ5Qh8GXNdCqrfp5dBaMe9eqs29vJfjKZPiHcOFLYgZd73Nx01ioztp6A50NkUqrUWe5hBxivdvSYq+3j+B0hA==
+"@microfocus/ux-ias@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@microfocus/ux-ias/-/ux-ias-1.1.2.tgz#0961372900c3ac1c2f35d54e97a1df827505940c"
+  integrity sha512-Sqj00fZ4kqdaIGApwD7hJdW7S6rKFf9uzN0/xxDohXpqXUIJHtcMeXeY82RC4EDK+UDg1XYmJBvkb/MNnY+fEQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
