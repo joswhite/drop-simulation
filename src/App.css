@@ -22,3 +22,11 @@
 .section {
     margin-top: 20px;
 }
+
+.canvas-panel {
+    display: inline-block;
+}
+
+.canvas-panel:last-of-type {
+    margin-left: 20px;
+}

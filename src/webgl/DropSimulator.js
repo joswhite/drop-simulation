@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {Simulator} from './Simulator';
 
-//
+// Allows the user to drop cubes and simulates them falling through space
 export function DropSimulator() {
     // Inputs used for creating cube
     const [error, setError] = useState(null);
@@ -19,8 +19,8 @@ export function DropSimulator() {
           { id: 'posZ', value: cubeZ, onChange: (e) => setCubeZ(e.target.value)} ],
         [ { id: 'speedX', value: cubeVX, onChange: (e) => setCubeVX(e.target.value)},
           { id: 'speedY', value: cubeVY, onChange: (e) => setCubeVY(e.target.value)},
-          { id: 'speedZ', value: cubeVZ, onChange: (e) => setCubeVZ(e.target.value)} ],
-        [ { id: 'gravity', value: gravity, onChange: (e) => setGravity(e.target.value)},
+          { id: 'speedZ', value: cubeVZ, onChange: (e) => setCubeVZ(e.target.value)},
+          { id: 'gravity', value: gravity, onChange: (e) => setGravity(e.target.value)},
           { id: 'hexColor', value: hexColor, onChange: (e) => setHexColor(e.target.value)} ]
     ];
 
@@ -28,7 +28,7 @@ export function DropSimulator() {
     const simulatorRef = useRef(null);
 
     // Allow user to create cube
-    const parseInput = (x) => parseInt(x);
+    const parseInput = (x) => parseFloat(x);
     const dropCube = () => {
         const position = [cubeX, cubeY, cubeZ].map(parseInput);
         const velocity = [cubeVX, cubeVY, cubeVZ].map(parseInput);
@@ -82,14 +82,18 @@ export function DropSimulator() {
         <div>
             {errorElement}
 
-            <canvas ref={canvasRef} width="640" height="480" />
-            <p>Drop a new Cube</p>
-            {inputElements}
-            <div className="section">
-                <button type="button" onClick={dropCube} className="ias-button">Drop Cube!</button>
+            <div className="canvas-panel">
+                <canvas ref={canvasRef} width="640" height="480" />
             </div>
-            <div className="section">
-                <button type="button" onClick={startStopSimulation} className="ias-button">Play/Pause</button>
+            <div className="canvas-panel">
+                <p>Drop a new Cube</p>
+                {inputElements}
+                <div className="section">
+                    <button type="button" onClick={dropCube} className="ias-button">Drop Cube!</button>
+                </div>
+                <div className="section">
+                    <button type="button" onClick={startStopSimulation} className="ias-button">Play/Pause</button>
+                </div>
             </div>
         </div>
     );
